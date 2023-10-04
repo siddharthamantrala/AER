@@ -2,7 +2,7 @@
 
 Code for preprint paper "Saliency-Guided Hidden Associative Replay for Continual Learning"
 
-
+![sharc_overall.pdf](https://github.com/AlexQilong/SHARC/files/12799633/sharc_overall.pdf)
 
 We extended the [Mammoth](https://github.com/aimagelab/mammoth) framework with our method SHARC
 
