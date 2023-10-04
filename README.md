@@ -1,2 +1,2 @@
 # SHARC
-Code for preprint Paper "Saliency-Guided Hidden Associative Replay for Continual Learning"
+Code for preprint paper "Saliency-Guided Hidden Associative Replay for Continual Learning"
