@@ -1,7 +1,5 @@
 # AER
 
-Code for preprint paper "Saliency-Guided Hidden Associative Replay for Continual Learning".
-
 ![aer_overall](https://github.com/AlexQilong/AER/assets/108171769/7216d299-ab74-43b3-a3f6-a092e23335a0)
 
 We extended the [Mammoth](https://github.com/aimagelab/mammoth) framework with our method AER.
