@@ -45,6 +45,32 @@ class DropoutNoise:
             mask = mask.unsqueeze(0).repeat((self.n_channels, 1, 1))
         return tensor * mask, mask
 
+class Salt_N_Pepper:
+    """
+    Adds salt and pepper noise to an image tensor.
+    
+    :param image: A PyTorch tensor of shape (C, H, W) with values in the range [0, 1]
+    :param salt_prob: Probability of a pixel being replaced with salt noise (1)
+    :param pepper_prob: Probability of a pixel being replaced with pepper noise (0)
+    :return: Noisy image tensor, salt mask and pepper mask
+    """
+    def __init__(self, salt = 0.01, pepper = 0.01):
+        self.salt = salt
+        self.pepper = pepper
+
+    def __call__(self, tensor):
+        noisy_image = tensor.clone()
+        # Generate a random mask for salt noise (setting pixels to 1)
+        salt_mask = torch.rand_like(tensor[0]) < self.salt
+        noisy_image[:, salt_mask] = 1
+
+        # Generate a random mask for pepper noise (setting pixels to 0)
+        pepper_mask = torch.rand_like(tensor[0]) < self.pepper
+        noisy_image[:, pepper_mask] = 0
+
+        return noisy_image, salt_mask, pepper_mask
+        
+
 
 class MaskingNoise:
     def __init__(self, p, n_channels=3):
@@ -210,6 +236,8 @@ def get_transforms(config: str):
         noise_transforms = {'mask0.25': MaskingNoise(p=0.25),
                             'mask0.50': MaskingNoise(p=0.50),
                             'mask0.75': MaskingNoise(p=0.75)}
+    elif config == 'snp':
+        noise_transforms = {'mask_snp': Salt_N_Pepper(salt=0.25, pepper = 0.25)}                                    
     elif config == 'all':
         noise_transforms = {'white0.2': WhiteNoise(var=0.2**2),
                             'white0.4': WhiteNoise(var=0.4**2),
@@ -219,7 +247,8 @@ def get_transforms(config: str):
                             'drop0.75': DropoutNoise(p=0.75),
                             'mask0.25': MaskingNoise(p=0.25),
                             'mask0.50': MaskingNoise(p=0.50),
-                            'mask0.75': MaskingNoise(p=0.75)}
+                            'mask0.75': MaskingNoise(p=0.75),
+                            'mask_snp': Salt_N_Pepper(salt=0.25, pepper = 0.25)}
     else:
         raise Exception(f"dataset-mode '{config}' is not supported.")
     # if not config == 'fast':
